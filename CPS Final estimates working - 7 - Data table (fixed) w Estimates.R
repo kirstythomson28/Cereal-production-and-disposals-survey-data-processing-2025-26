@@ -1,5 +1,5 @@
 ## Data table (fixed) w estimates tab ###
-## Position in order: 7 / 11
+## Position in order: 9/ 10
 
 ## This tab is recreating the pivot table previously used in Excel##
 Data_table_fixed_est <- disposals.w.est %>%
