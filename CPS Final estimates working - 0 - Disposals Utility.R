@@ -2,7 +2,7 @@
 ## Position in order: 0/ 11
 
 # The working directory should automatically be set to where the project file is stored, if not add it manually:
-#setwd("~/Cereal survey/Cereal survey 2024-25/Disposals Code")
+#setwd("")
 
 #Load all packages necessary 
 library(openxlsx)
