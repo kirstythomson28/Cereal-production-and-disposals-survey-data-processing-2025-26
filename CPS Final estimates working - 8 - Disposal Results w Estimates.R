@@ -195,7 +195,7 @@ Disposals_results_w_estimates <- subset_DRT_with_overall2 %>%
 #export xlsx
 # filename appropriate for data upload to erdm
 str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July - "
-str5 <- "Data - Raw Data - June Disposals final results with estimates - "
+str5 <- "Data - June Disposals final results with estimates - "
 str6 <- ".xlsx"
 outputname <- paste(
   str4,
@@ -253,7 +253,7 @@ scottish_average2 <- Disposals_results_w_estimates %>%
 #export xlsx
 # filename appropriate for data upload to erdm
 str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July"
-str5 <- " - Data - Raw Data - June Disposals final results Scottish averages - "
+str5 <- " - Data - June Disposals final results Scottish averages - "
 str6 <- ".xlsx"
 outputname <- paste(
   str4,
