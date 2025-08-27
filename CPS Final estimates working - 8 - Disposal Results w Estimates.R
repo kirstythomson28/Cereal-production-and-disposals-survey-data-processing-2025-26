@@ -195,20 +195,18 @@ Disposals_results_w_estimates <- subset_DRT_with_overall2 %>%
 #export xlsx
 # filename appropriate for data upload to erdm
 str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July - "
-str5 <- " - Data - Raw Data - June Disposals final results with estimates - "
-str6 <- ".csv"
+str5 <- "Data - Raw Data - June Disposals final results with estimates - "
+str6 <- ".xlsx"
 outputname <- paste(
   str4,
-  format(Sys.Date(), format="%Y"),
   str5,
   format(Sys.time(), format="%d %B"),
   str6,
   sep = "")
 
-write.csv(Disposals_results_w_estimates, outputname, row.names = FALSE)
+write.xlsx(Disposals_results_w_estimates, outputname, rowNames = FALSE)
 
 
-# Assuming final_subset_DRT is your final dataset with rows for 'Overall'
 # Create the scottish_average summary table
 scottish_average2 <- Disposals_results_w_estimates %>%
   # Filter for rows where Month and Region are 'Overall'
@@ -219,7 +217,8 @@ scottish_average2 <- Disposals_results_w_estimates %>%
   summarize(across(all_of(variables), ~ mean(.x / Total_disposed, na.rm = TRUE) * 100),
             .groups = 'drop') %>%
   # Format the variables as percentages with 0 decimal places
-  mutate(across(all_of(variables), ~ sprintf("%.0f", .)))
+  mutate(across(all_of(variables), ~ sprintf("%.0f", .))) 
+
 
 # View the summary table
 #View(scottish_average2)
@@ -227,18 +226,17 @@ scottish_average2 <- Disposals_results_w_estimates %>%
 
 #export xlsx
 # filename appropriate for data upload to erdm
-str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July - "
+str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July"
 str5 <- " - Data - Raw Data - June Disposals final results Scottish averages - "
-str6 <- ".csv"
+str6 <- ".xlsx"
 outputname <- paste(
   str4,
-  format(Sys.Date(), format="%Y"),
   str5,
   format(Sys.time(), format="%d %B"),
   str6,
   sep = "")
 
-write.csv(scottish_average2, outputname, row.names = FALSE)
+write.xlsx(scottish_average2, outputname, rowNames = FALSE)
 
 
 

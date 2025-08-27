@@ -514,10 +514,11 @@ disposals_nov <- Disposals_ALL_Nov %>%
 
 disposals_june <- Disposals_ALL_June%>%
   rename(Opening_stock = Opening_Stock_June,
-         Closing_stock = June_Closing_Stock)
+         Closing_stock = June_Closing_Stock) 
 
 
-disposals <- full_join(disposals_nov, disposals_june)
+disposals <- full_join(disposals_nov, disposals_june)%>% 
+  anti_join(Jun_removals, by = c("parish", "holding", "Crop", "Month"))
 
 #export csv
 # filename appropriate for data upload to erdm
