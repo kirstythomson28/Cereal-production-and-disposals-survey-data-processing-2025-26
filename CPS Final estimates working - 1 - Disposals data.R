@@ -253,10 +253,10 @@ joined_all <- joined_all %>%
 
 #export csv
 # filename appropriate for data upload to erdm
-str1 <- "Cereal Production and Disposal Survey - 2024-25 - Production - "
+str1 <- "Cereal Production and Disposal Survey - 2024-25 - Production"
 str2 <- " - Data - Raw Data - Formatted data output - "
 str3 <- ".csv"
-outputname <- paste(str1, format(Sys.Date(), format="%Y"), str2, format(Sys.Date(), format="%d %B"), str3, sep = "")
+outputname <- paste(str1, str2, format(Sys.Date(), format="%d %B"), str3, sep = "")
 write.csv(joined_all, outputname, row.names = FALSE)
 
 ##### ##### November DISPOSALS ##### ##### 
@@ -372,10 +372,10 @@ head(Disposals_Crop)
 
 #export csv
 # # filename appropriate for data upload to erdm
-# str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - November - "
+# str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - November"
 # str5 <- " - Data - Raw Data - Formatted data output - "
 # str6 <- ".csv"
-# outputname <- paste(str4, format(Sys.Date(), format="%Y"), str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
+# outputname <- paste(str4, str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
 # write.csv(Disposals_ALL_Nov, outputname, row.names = FALSE)
 
 ##### ########## ########## ########## #####
@@ -494,11 +494,11 @@ Disposals_Crop_June <- Disposals_Crop_June%>%
 
 
 # # Export XLSX with filename appropriate for data upload to ERDM, including date and time
-# str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July - "
+# str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - July"
 # str5 <- " - Data - Raw Data - Formatted data output - "
 # str6 <- ".xlsx"
 # current_datetime <- format(Sys.time(), format="%Y")
-# outputname <- paste(str4, format(Sys.Date(), format="%Y"), str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
+# outputname <- paste(str4, str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
 # write.xlsx(Disposals_ALL_June, outputname, rowNames = FALSE)
 
 
@@ -522,7 +522,7 @@ disposals <- full_join(disposals_nov, disposals_june)%>%
 
 #export csv
 # filename appropriate for data upload to erdm
-str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Nov and Jul"
+str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Oct and Jun"
 str5 <- " - Data - Raw Data - Formatted data output - "
 str6 <- ".csv"
 outputname <- paste(str4, str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
@@ -557,12 +557,11 @@ partial_returns <- full_dataset2 %>%
 
 #export xlsx
 # filename appropriate for data upload to erdm
-str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Nov and Jul -  "
+str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Oct and Jun"
 str5 <- " - Data - Raw Data - List of partial returns  - "
 str6 <- ".csv"
 outputname <- paste(
   str4, 
-  format(Sys.Date(), format="%Y"), 
   str5, 
   format(Sys.time(), format="%d %B"), 
   str6, 

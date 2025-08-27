@@ -13,12 +13,11 @@ view(disposals.w.est)
 
 #export xlsx
 # filename appropriate for data upload to erdm
-str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Nov and Jul - "
+str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Oct and Jun"
 str5 <- " - Data - Raw Data - Disposals with estimates - "
 str6 <- ".csv"
 outputname <- paste(
   str4,
-  format(Sys.Date(), format="%Y"),
   str5,
   format(Sys.time(), format="%d %B"),
   str6,
