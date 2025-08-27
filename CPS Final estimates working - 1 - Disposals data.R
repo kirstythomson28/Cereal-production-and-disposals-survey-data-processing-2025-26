@@ -522,11 +522,10 @@ disposals <- full_join(disposals_nov, disposals_june)%>%
 
 #export csv
 # filename appropriate for data upload to erdm
-str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Nov and Jul - "
+str4 <- "Cereal Production and Disposal Survey - 2024-25 - Disposals - Nov and Jul"
 str5 <- " - Data - Raw Data - Formatted data output - "
-str6 <- ".xlsx"
-current_datetime <- format(Sys.time(), format="%Y")
-outputname <- paste(str4, format(Sys.Date(), format="%Y"), str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
+str6 <- ".csv"
+outputname <- paste(str4, str5, format(Sys.Date(), format="%d %B"), str6, sep = "")
 write.csv(disposals, outputname, row.names = FALSE)
 
 

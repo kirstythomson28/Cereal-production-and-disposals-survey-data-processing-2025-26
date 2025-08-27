@@ -36,7 +36,7 @@ test_data <- read_csv("ARE - DISD - Agricultural Census - Cereal Production and 
          holding = X2)
 
 #7. Load list of records to be removed following QA of survey results  
-Jun_removals <- read_excel("Cereal Production and Disposal Survey - 2024-25 - Disposals - July - 2025 - Data - Raw Data - Records to be removed.xlsx")
+Jun_removals <- read_excel("Cereal Production and Disposal Survey - 2024-25 - Disposals - July - Data - Raw Data - Records to be removed.xlsx")
 
 
 ## Remove test data (Friendly farmers) from data sets ##
@@ -74,3 +74,7 @@ variables2 <- c("Sum_Opening_stock","Sum_Merchants_for_Malting","Sum_Merchants_f
                 "Sum_Merchants_for_Industrial","Sum_Merchants_for_Other","Sum_Farmers_in_Scotland","Sum_Farmers_outwith_Scotland","Sum_Used_for_Seed",
                 "Sum_Used_for_Feed","Sum_Waste_Other","Sum_Closing_stock")
 
+variables3 <- c("Merchants_for_Malting", "Merchants_for_Feed", "Merchants_for_Milling",  
+               "Merchants_for_Seed", "Merchants_for_Industrial", "Merchants_for_Other",     
+               "Farmers_in_Scotland", "Farmers_outwith_Scotland", "Used_for_Seed", 
+               "Used_for_Feed", "Waste_Other", "Closing_Stock")

@@ -207,7 +207,26 @@ outputname <- paste(
 write.xlsx(Disposals_results_w_estimates, outputname, rowNames = FALSE)
 
 
+add_closing_proportion <- Disposals_results_w_estimates %>%
+  group_by(Crop) %>%
+  mutate(
+    closing_proportion = case_when(
+      Month == "Overall" & Region == "Overall" ~ 
+        100*Closing_Stock[Month == "Jun" & Region == "Overall"] /
+        Start_stock[Month == "Oct" & Region == "Overall"],
+      TRUE ~ NA_real_
+    )
+  ) %>%
+  ungroup() %>% 
+  select(Crop, Month, Region, closing_proportion) %>% 
+  filter(Month == "Overall", 
+         Region == "Overall")
+
+
+
 # Create the scottish_average summary table
+
+
 scottish_average2 <- Disposals_results_w_estimates %>%
   # Filter for rows where Month and Region are 'Overall'
   filter(Month == "Overall", Region == "Overall") %>%
@@ -216,8 +235,15 @@ scottish_average2 <- Disposals_results_w_estimates %>%
   # Calculate the average for each variable divided by Total_disposed
   summarize(across(all_of(variables), ~ mean(.x / Total_disposed, na.rm = TRUE) * 100),
             .groups = 'drop') %>%
-  # Format the variables as percentages with 0 decimal places
-  mutate(across(all_of(variables), ~ sprintf("%.0f", .))) 
+  mutate(
+    Month = "Overall",
+    Region = "Overall"
+  ) %>%
+  left_join(add_closing_proportion, by = c("Crop", "Region", "Month")) %>%
+  select(-Month, -Region)  %>% 
+  rename(`Closing stock as a proportion of overall production`= closing_proportion)
+
+
 
 
 # View the summary table
