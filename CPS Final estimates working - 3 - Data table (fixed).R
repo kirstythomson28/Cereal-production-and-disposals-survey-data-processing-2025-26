@@ -25,11 +25,23 @@ unique_counts <- filtered_disposals %>%
   summarise(
     count_parish_holdings = n_distinct(CPH),
     .groups = 'drop'
+  ) %>%
+  complete(
+    Month = unique(filtered_disposals$Month),
+    Region = unique(filtered_disposals$Region),
+    Crop   = unique(filtered_disposals$Crop),
+    fill   = list(count_parish_holdings = 0)
   )
 
 
 # Join the unique counts with Data_table_fixed
 Data_table_fixed <- Data_table_fixed %>%
+  complete(
+    Month = unique(filtered_disposals$Month),
+    Region = unique(filtered_disposals$Region),
+    Crop   = unique(filtered_disposals$Crop),
+    fill   = list(count_parish_holdings = 0)
+  ) %>% 
   left_join(unique_counts, by = c("Month", "Region", "Crop"))
 
 Data_table_fixed <- Data_table_fixed %>%
@@ -66,7 +78,6 @@ Data_table_fixed_with_totals <- Data_table_fixed_with_totals %>%
   arrange(Month, Region, Crop)
 
 # View(Data_table_fixed_with_totals)
-
 
 
 
