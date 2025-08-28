@@ -81,7 +81,7 @@ DRT <- DRT %>%
   group_by(Month, Region, Crop) %>%
   # Create the 'condition' variable first. The condition being if a there is 
   # greater than 4 parish/holding's in that region for the crop in question
-  # assign a 1, if theres not assign a 0
+  # assign a 1, if theres not assign a 0.
   mutate(condition = ifelse(count_parish_holdings > 4, 1, 0)) %>%
   # Use across to apply the conditional logic to each variable
   # If assigned a one, to scale the numbers up to scotland level calculates the
