@@ -537,7 +537,8 @@ disposals_june <- Disposals_ALL_June%>%
 
 
 disposals <- full_join(disposals_nov, disposals_june)%>% 
-  anti_join(removals, by = c("CPH", "Crop", "Month")) %>% 
+  anti_join(jun_removals, by = c("CPH", "Crop", "Month")) %>%
+  anti_join(nov_removals, by = c("CPH", "Crop")) %>% 
   anti_join(Whole_cropped_removals, by = c("CPH", "Crop")) %>% 
   select(-Whole_cropped)
 
