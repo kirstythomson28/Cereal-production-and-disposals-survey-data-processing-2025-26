@@ -262,12 +262,13 @@ write.csv(joined_all, outputname, row.names = FALSE)
 ##### ##### November DISPOSALS ##### ##### 
 
 # Create crop dataframe as a subset of df_raw
-Disposals_Wheat <- subset(df_raw, select=c(CPH, parish, holding, item40002,item40005, item40450, item40013:item40023, item40082))
+Disposals_Wheat <- subset(df_raw, select=c(CPH, parish, holding, item40002,item40005, item40450, item40009, item40013:item40023, item40082))
 Disposals_Wheat <- Disposals_Wheat %>%
   rename(
     Crop = item40002,
     Production = item40005,
     Yield = item40450,
+    Whole_cropped = item40009,
     Merchants_for_Malting = item40013,
     Merchants_for_Feed = item40014,
     Merchants_for_Milling = item40015,
@@ -285,12 +286,16 @@ Disposals_Wheat <- Disposals_Wheat %>%
 Disposals_Wheat$Crop <- rep("Wheat",len=nrow(Disposals_Wheat))
 
 # Create crop dataframe as a subset of df_raw
-Disposals_Barley <- subset(df_raw, select=c(CPH, parish, holding, item40032, item40042,item40043, item40066:item40091))
+Disposals_Barley <- subset(df_raw, select=c(CPH, parish, holding, item40032, item40042,item40043,item40057,item40058, item40066:item40091))
 Disposals_Barley <- Disposals_Barley%>%
   #  Work row by row in the dataframe
   rowwise %>%
   # Create a single production figure by combining winter and spring crop
   mutate(Production = coalesce(item40042,0) + coalesce(item40043,0))%>%
+  #Identify whole cropped crop 
+  mutate(item40057 = replace_na(item40057, 2), #if whole cropped is NA set to NO
+         item40058 = replace_na(item40058, 2), #if whole cropped is NA set to NO
+         Whole_cropped = if_else(item40057 == 2 & item40058 == 2, 2, 1)) %>% # if spring = no and winter = no then wholecropped = no, otherwise whole cropped = yes
   rename(
     Crop = item40032,
     Merchants_for_Malting = item40066,
@@ -306,17 +311,21 @@ Disposals_Barley <- Disposals_Barley%>%
     Waste_Other = item40096,
     October_Stock = item40091)%>%
   # Organising the dataframe, then removing winter and spring production 
-  select(CPH, parish, holding, Crop, Production, everything(),-item40042, -item40043, -item40099)
+  select(CPH, parish, holding, Crop, Whole_cropped, Production, everything(),-item40042, -item40043, -item40099, -item40057, -item40058)
 # Replace "na" with Crop type
 Disposals_Barley$Crop <- rep("Barley",len=nrow(Disposals_Barley))
 
 # Create crop dataframe as a subset of df_raw
-Disposals_Oats <- subset(df_raw, select=c(CPH, parish, holding, item40110, item40117, item40118, item40156:item40103))
+Disposals_Oats <- subset(df_raw, select=c(CPH, parish, holding, item40110, item40117, item40118, item40126,item40127, item40156:item40103))
 Disposals_Oats <- Disposals_Oats %>%
   #  Work row by row in the dataframe
   rowwise %>%
   # Create a single production figure by combining winter and spring crop
   mutate(Production = coalesce(item40117,0) + coalesce(item40118,0))%>%
+  #Identify whole cropped crop 
+  mutate(item40126 = replace_na(item40126, 2), #if whole cropped is NA set to NO
+         item40127 = replace_na(item40127, 2), #if whole cropped is NA set to NO
+         Whole_cropped = if_else(item40126 == 2 & item40127 == 2, 2, 1)) %>% # if spring = no and winter = no then wholecropped = no, otherwise whole cropped = yes
   rename(
     Crop = item40110,
     Merchants_for_Malting = item40156,
@@ -331,7 +340,7 @@ Disposals_Oats <- Disposals_Oats %>%
     Used_for_Feed = item40183,
     Waste_Other = item40186,
     October_Stock = item40103) %>%  #then removing winter and spring production 
-  select(CPH, parish, holding, Crop, Production, everything(),-item40117, -item40118, -item40189)
+  select(CPH, parish, holding, Crop, Whole_cropped, Production, everything(),-item40117, -item40118, -item40189, -item40126, -item40127)
 # Replace "na" with Crop type
 Disposals_Oats$Crop <- rep("Oats",len=nrow(Disposals_Oats))
 
@@ -349,7 +358,7 @@ Disposals_ALL_Nov <- Disposals_ALL %>%
       nuts2 == 4 ~ 'UKM6',
       nuts2 == 5 ~ 'UKM8'))%>%
   select(
-    CPH, parish, holding, Region, Crop, Production, everything(),-nuts2)%>%
+    CPH, parish, holding, Region, Crop, Whole_cropped, Production, everything(),-nuts2)%>%
   filter(
     Production>0)%>%
   mutate_all(
@@ -358,10 +367,20 @@ Disposals_ALL_Nov <- Disposals_ALL %>%
          Crop_general = Crop)%>%
   relocate(Month, .before = Region) %>% 
   relocate(Crop_general, .before = Production) %>% 
-  relocate(Yield, .after = October_Stock)
+  relocate(Yield, .after = October_Stock)%>%
+  mutate(Whole_cropped = case_when(Whole_cropped == 1 ~ 'YES',
+                               Whole_cropped == 2 ~ 'NO'))
+
+#subset the whole cropped entries
+Whole_cropped_removals <- Disposals_ALL_Nov %>% 
+  filter(Whole_cropped == 'YES')
+
+#remove the wholecropped entries from the data
+Disposals_Crop_Nov <- Disposals_ALL_Nov %>% 
+  filter(Whole_cropped != 'YES')
 
 #  Disposals per crop type as a subset of Disposals_ALL
-Disposals_Crop <- subset(Disposals_ALL_Nov, select=c(Crop, Production, Merchants_for_Malting, Merchants_for_Feed, Merchants_for_Milling,
+Disposals_Crop <- subset(Disposals_Crop_Nov, select=c(Crop, Production, Merchants_for_Malting, Merchants_for_Feed, Merchants_for_Milling,
                                                      Merchants_for_Seed, Merchants_for_Industrial, Merchants_for_Other, Farmers_in_Scotland,
                                                      Farmers_outwith_Scotland, Used_for_Seed, Used_for_Feed, Waste_Other, October_Stock))
 Disposals_Crop <- Disposals_Crop%>%
@@ -518,7 +537,9 @@ disposals_june <- Disposals_ALL_June%>%
 
 
 disposals <- full_join(disposals_nov, disposals_june)%>% 
-  anti_join(Jun_removals, by = c("parish", "holding", "Crop", "Month"))
+  anti_join(removals, by = c("CPH", "Crop", "Month")) %>% 
+  anti_join(Whole_cropped_removals, by = c("CPH", "Crop")) %>% 
+  select(-Whole_cropped)
 
 #export csv
 # filename appropriate for data upload to erdm
